@@ -63,7 +63,7 @@ function Page() {
     }
 
     return (
-        <div className='lg:px-10 py-8 px-4 pt-0' dir="rtl">
+        <div className='lg:px-10 py-8 sm:px-4 px-2 pt-0' dir="rtl">
             <Header prop='الطلاب' showSearch={true} />
 
             <div className='w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden'>

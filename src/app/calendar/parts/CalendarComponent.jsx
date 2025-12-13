@@ -96,8 +96,7 @@ function DynamicCalendarComponent({ setCurrentDay }) {
     };
 
     return (
-        <div dir='rtl' className="bg-white p-4 sm:p-6 rounded-xl shadow-2xl border border-gray-100 w-full max-w-4xl mx-auto">
-
+        <div dir='rtl' className="bg-white p-4 sm:p-6 rounded-xl md:shadow-lg border border-gray-100 w-full max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-6">
                 <motion.button
                     onClick={() => handleMonthChange(-1)}

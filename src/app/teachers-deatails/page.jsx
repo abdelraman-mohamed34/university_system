@@ -69,11 +69,11 @@ function Page() {
     const profs = professors.filter(prof => prof.code === savedTeacher)
     if (!savedTeacher || profs.length === 0) {
         // ... (كود ال Skeleton) ...
-        if (!savedTeacher) return <div className='lg:px-10 pb-5 px-4'>لا يوجد معلم محدد</div>
+        if (!savedTeacher) return <div className='lg:px-10 pb-5 sm:px-4 px-2'>لا يوجد معلم محدد</div>
         if (profs.length === 0) {
             // Skeleton Loader
             return (
-                <div className='lg:px-10 pb-5 px-4'>
+                <div className='lg:px-10 pb-5 sm:px-4 px-2'>
                     <Header prop='بيانات المعلم' />
                     <div className='w-full rounded-xl pb-10 overflow-hidden'>
                         <Skeleton variant="rectangular" height={200} sx={{ backgroundColor: '#F5F5F5', mb: 3 }} />
@@ -92,7 +92,7 @@ function Page() {
     const filteredProfessor = profs[0]
 
     return (
-        <div className='lg:px-10 pb-5 px-4'>
+        <div className='lg:px-10 pb-5 sm:px-4 px-2'>
             <Header prop='بيانات المعلم' />
 
             <div className='w-full rounded-xl pb-10 overflow-hidden'>

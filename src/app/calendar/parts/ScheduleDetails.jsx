@@ -34,7 +34,7 @@ function ScheduleDetails({ currentDay }) {
         <div dir='rtl' className="w-full">
 
             <motion.div
-                className='mb-3 p-6 rounded-2xl bg-white flex flex-col justify-center shadow-lg'
+                className='mb-3 p-6 rounded-2xl bg-white flex flex-col justify-center md:shadow-lg'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}

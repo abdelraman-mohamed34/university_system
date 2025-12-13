@@ -61,7 +61,7 @@ function Page() {
     }
 
     return (
-        <div className='w-full rounded-xl sm:mb-5 mb-2 pb-3 overflow-hidden p-10 pt-0' dir="rtl">
+        <div className='lg:px-10 sm:px-7sm:py-5 pb-5 px-2 pt-0 sm:pt-0' dir="rtl">
             {!savedStudentCode ? (
                 <div className='flex justify-center items-center h-64 text-gray-500 font-bold'> لا يوجد طالب محدد</div>
             ) : !student ? (

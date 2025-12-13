@@ -12,7 +12,7 @@ function Page() {
             transition={{ duration: 0.5 }}
         >
             <motion.div
-                className="flex flex-col items-center justify-center p-8 sm:p-16 w-full md:w-1/2"
+                className="flex flex-col items-center justify-center p-8 sm:p-16 w-full md:w-1/2 pt-30"
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 100 }}

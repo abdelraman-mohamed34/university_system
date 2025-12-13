@@ -1,37 +1,38 @@
-import { getToken } from "next-auth/jwt"
-import { NextResponse } from "next/server"
-import { withAuth } from 'next-auth/middleware'
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+import { withAuth } from 'next-auth/middleware';
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
 export default withAuth(
-    async function proxy(req) {
-        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-        const path = req.nextUrl.pathname
+    async function middleware(req) {
+        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        const path = req.nextUrl.pathname;
 
-        // global logic on all matchers
-        if (!token) return NextResponse.redirect(new URL('/login', req.url))
+        if (!token) return NextResponse.redirect(`${BASE_URL}/login`);
 
-        // protected teachers pages
         const isTeacherRoute =
-            path.startsWith('/subject-management')
-            || path.startsWith('/assignment-details')
+            path.startsWith('/subject-management') ||
+            path.startsWith('/assignment-details');
 
-        const isAdminRoute = path.startsWith('/addNewTeacher') || path.startsWith('/addNewTeacher/:path*/')
-        if (token && isAdminRoute && token.role !== 'admin')
-            return NextResponse.redirect(new URL('/', req.url))
+        const isAdminRoute = path.startsWith('/addNewTeacher');
 
         if (isTeacherRoute && token.role !== 'teacher') {
-            return NextResponse.redirect(new URL('/', req.url))
+            return NextResponse.redirect(`${BASE_URL}/`);
+        }
+        if (isAdminRoute && token.role !== 'admin') {
+            return NextResponse.redirect(`${BASE_URL}/`);
         }
 
-        return NextResponse.next()
+        return NextResponse.next();
     }
-)
+);
 
 export const config = {
     matcher: [
-        '/subject-management/:path*/',
-        '/assignment-details/:path*/',
+        '/subject-management/:path*',
+        '/assignment-details/:path*',
         '/myAccount',
         '/addNewTeacher',
     ],
-}
+};
