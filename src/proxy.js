@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { withAuth } from 'next-auth/middleware';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const BASE_URL = (process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 export default withAuth(
     async function middleware(req) {
@@ -23,7 +23,6 @@ export default withAuth(
         if (isAdminRoute && token.role !== 'admin') {
             return NextResponse.redirect(`${BASE_URL}/`);
         }
-
         return NextResponse.next();
     }
 );
