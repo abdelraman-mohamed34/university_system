@@ -22,16 +22,13 @@ const eventSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchEvents.pending, (state) => {
             state.loading = true;
-            console.log('pending');
         });
         builder.addCase(fetchEvents.fulfilled, (state, action) => {
             state.events = action.payload;
             state.loading = false;
-            console.log('fulfilled');
         });
         builder.addCase(fetchEvents.rejected, (state) => {
             state.loading = false;
-            console.log('rejected');
         });
     },
 });

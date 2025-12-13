@@ -15,6 +15,17 @@ export const fetchProfessors = createAsyncThunk(
     }
 );
 
+export const createTeacher = createAsyncThunk(
+    'admins/fetchAdmins',
+    async (uploaded) => {
+        const response = await axios.post(`/api/professors`,
+            uploaded, // req.json()
+            { withCredentials: true } // to pass jwt
+        );
+        return response.data;
+    }
+);
+
 const professorSlice = createSlice({
     name: 'professors',
     initialState,
@@ -22,16 +33,13 @@ const professorSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchProfessors.pending, (state) => {
             state.loading = true;
-            console.log('pending');
         });
         builder.addCase(fetchProfessors.fulfilled, (state, action) => {
             state.professors = action.payload;
             state.loading = false;
-            console.log('fulfilled');
         });
         builder.addCase(fetchProfessors.rejected, (state) => {
             state.loading = false;
-            console.log('rejected');
         });
     },
 });

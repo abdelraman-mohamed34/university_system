@@ -24,7 +24,6 @@ const FoodSkeleton = () => (
 function Page() {
 
     const { foods, loading } = useSelector(f => f.food)
-    console.log(foods)
 
     const dispatch = useDispatch()
 
@@ -38,7 +37,11 @@ function Page() {
     }
 
     const confirmOrder = (item) => {
-        console.log("Order confirmed:", item)
+        dispatch(setShowSnackbar({
+            state: true,
+            message: 'تم الطلب',
+            severity: 'success',
+        }))
     }
 
     useEffect(() => {
@@ -46,10 +49,10 @@ function Page() {
     }, [dispatch])
 
     return (
-        <div className="lg:px-10 sm:py-5 pb-5 sm:px-7 px-2">
-            <Header prop={'الطعام'} />
+        <div className="lg:px-10 sm:py-5 pb-5 sm:px-7 px-2 pt-0 sm:pt-0">
+            <Header prop={'المتجر'} />
 
-            <div className="w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow my-5">
+            <div className="w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow mb-5">
 
                 {/* Skeleton Loader */}
                 {loading && (

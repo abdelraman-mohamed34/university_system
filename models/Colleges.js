@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const CollegesSchema = new mongoose.Schema({
 
+    university: { type: String, default: 'Al-Azhar University Cairo' },
     college: { type: String },
 
     years: [
@@ -20,7 +21,8 @@ const CollegesSchema = new mongoose.Schema({
                                 {
                                     subCode: { type: String },
                                     subject: { type: String },
-                                    professor: { type: String },
+                                    professor: { type: [String], default: [] },
+                                    data: { type: Array, default: [] },
                                     assignments: { type: Array, default: [] },
                                     tests: { type: Array, default: [] }
                                 }

@@ -17,11 +17,10 @@ export const fetchUsers = createAsyncThunk(
 // upload profile image
 export const uploadProfileImage = createAsyncThunk(
     'profileImage/uploadProfileImage',
-    async ({ id, img }) => {
+    async ({ img }) => {
         const response = await axios.post(
             `/api/users`,
             {
-                id,
                 img,
             }, // req.json
             { withCredentials: true } // to pass jwt
@@ -33,12 +32,9 @@ export const uploadProfileImage = createAsyncThunk(
 // upload profile image
 export const deleteProfileImage = createAsyncThunk(
     'profileImage/deleteProfileImage',
-    async ({ id }) => {
+    async () => {
         const response = await axios.delete(
             `/api/users`,
-            {
-                data: { id },
-            }, // req.json
             { withCredentials: true } // to pass jwt
         );
         return response.data;
@@ -51,24 +47,8 @@ const usersSlice = createSlice({
     reducers: {},
 
     extraReducers: (builder) => {
-        builder.addCase(fetchUsers.pending, (state, action) => {
-            console.log('users pending')
-        });
         builder.addCase(fetchUsers.fulfilled, (state, action) => {
-            console.log('users fulfilled')
             state.users = action.payload
-        });
-        builder.addCase(fetchUsers.rejected, (state, action) => {
-            console.log('users rejected')
-        });
-        builder.addCase(uploadProfileImage.pending, () => {
-            console.log('uploaded the profile pending')
-        });
-        builder.addCase(uploadProfileImage.fulfilled, (state, action) => {
-            console.log('uploaded the profile image')
-        });
-        builder.addCase(uploadProfileImage.rejected, () => {
-            console.log('failed to upload the new profile image')
         });
     },
 });

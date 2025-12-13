@@ -1,20 +1,18 @@
-// import { food } from "../../../data/foodData.js";
-// import Food from "../../../models/Food.js";
-// import connectDB from "../../lib/mongodb.js";
-// async function seed() {
-//     try {
-//         await connectDB();
+import connectDB from "../../lib/mongodb.js";
+import Professor from "../../../models/Professor.js";
 
-//         await Food.deleteMany({});
+async function seed() {
+    try {
+        await connectDB();
 
-//         await Food.insertMany(food);
+        await Professor.deleteMany({});
 
-//         console.log("Seeding finished successfully");
-//         process.exit(0);
-//     } catch (err) {
-//         console.error("Seeding failed:", err);
-//         process.exit(1);
-//     }
-// }
+        console.log("Seeding finished successfully");
+        process.exit(0);
+    } catch (err) {
+        console.error("Seeding failed:", err);
+        process.exit(1);
+    }
+}
 
-// seed();
+seed();

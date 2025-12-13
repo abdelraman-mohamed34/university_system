@@ -4,12 +4,12 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import connectDB from "@/lib/mongodb";
 
 export async function POST(req) {
-    await connectDB();
 
+    await connectDB();
     const session = await getServerSession(authOptions);
     const { title, id, solvedAt, subCode } = await req.json();
 
-    if (!session) {
+    if (!session || session.user.role.trim() !== 'student') {
         return new Response(JSON.stringify({ success: false, message: 'You need to sign in' }), { status: 403 });
     }
 

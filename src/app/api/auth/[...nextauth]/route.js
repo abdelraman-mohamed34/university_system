@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import connectDB from "@/lib/mongodb";
 import Student from "../../../../../models/Student";
 import Teacher from "../../../../../models/Professor";
+import Admin from "../../../../../models/Admin";
 
 export const authOptions = {
     session: { strategy: "jwt" },
@@ -19,6 +20,7 @@ export const authOptions = {
 
                 let user = await Student.findOne({ email: credentials.email.toLowerCase() });
                 if (!user) user = await Teacher.findOne({ email: credentials.email.toLowerCase() });
+                if (!user) user = await Admin.findOne({ email: credentials.email.toLowerCase() });
                 if (!user) return null;
 
                 const isValid = await bcrypt.compare(credentials.password, user.passwordHash);

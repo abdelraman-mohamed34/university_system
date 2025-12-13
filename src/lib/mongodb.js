@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const url = process.env.MONGODB_URI
-
+const url = 'mongodb+srv://abdelramanmohamed34_db_user:24781011p@store.eizrnvi.mongodb.net/alazhar_university?retryWrites=true&w=majority'
 let cached = global.mongoose;
 
 if (!cached) cached = global.mongoose = { conn: null, promise: null };

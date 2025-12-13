@@ -7,11 +7,12 @@ import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setShowDrawer } from "../features/NormalSlices/drawerSlice";
+import { globals } from "../../../data/global";
 
 export default function SideBar() {
     const pathname = usePathname();
     const dispatch = useDispatch();
-    const showDrawer = useSelector(d => d.drawer.showDrawer); // menu btn
+    const showDrawer = useSelector(d => d.drawer.showDrawer);
 
     // Sidebar items component
     const SidebarItems = () => (
@@ -23,7 +24,7 @@ export default function SideBar() {
                         <li
                             className={`p-3 my-0.5 text-lg rounded-l-3xl flex gap-2 items-center whitespace-nowrap cursor-pointer
                                 ${isActive
-                                    ? "bg-[#F5F5F5] text-[#4D44B5]"
+                                    ? "bg-[#F3F4FF] text-[#4D44B5]"
                                     : "bg-transparent text-white hover:bg-[#F5F5F5] hover:text-[#4D44B5]"}`}
                             onClick={() => dispatch(setShowDrawer(false))}
                         >
@@ -39,34 +40,31 @@ export default function SideBar() {
     // Sidebar content
     const sidebarContent = (
         <>
-            {/* Header */}
             <div className="flex justify-center items-center p-4 gap-3">
-                <h2 className="text-lg text-white font-semibold">Akademi</h2>
-                <span className="aspect-square rounded-xl p-1.5 px-3 text-center bg-[#FB7D5B] text-white font-bold text-2xl">
-                    A
-                </span>
+                <h2 className="sm:text-2xl text-lg text-white font-semibold">جامعتي</h2>
+                <img src={globals.logoLink} alt="logo" className="w-10 aspect-square object-cover" />
             </div>
 
-            {/* Body */}
-            <div className="w-full h-130 pl-4 flex-1 overflow-y-auto hide-scrollbar">
+            <div className="w-full pl-4 flex-1 overflow-y-auto hide-scrollbar">
                 <SidebarItems />
             </div>
         </>
     );
 
-    // Desktop sidebar
     const desktopSidebar = (
         <motion.div
-            className="fixed top-0 left-0 h-full w-[250px] bg-[#4D44B5] flex-col pb-10 lg:flex hidden z-50"
+            className="sticky top-0 h-screen w-[250px] bg-[#4D44B5] flex-col pb-10 lg:flex hidden z-50 overflow-hidden border-r border-[#F3F4FF]"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
-            {sidebarContent}
+            <div className='flex flex-col h-full'>
+                {sidebarContent}
+            </div>
         </motion.div>
     );
 
-    // Mobile sidebar portal
+    // Mobile sidebar portal (Fixed behavior)
     const mobileSidebar = showDrawer
         ? createPortal(
             <motion.div
@@ -75,12 +73,10 @@ export default function SideBar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
-                {/* Backdrop */}
                 <div
                     className="bg-black/70 w-full h-screen backdrop-blur"
                     onClick={() => dispatch(setShowDrawer(false))}
                 />
-                {/* Sidebar */}
                 <motion.div
                     className="absolute left-0 h-full w-[250px] bg-[#4D44B5] flex-col pb-10 z-50"
                     initial={{ x: -250 }}
@@ -88,9 +84,12 @@ export default function SideBar() {
                     exit={{ x: -250 }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                    {sidebarContent}
+                    <div className='flex flex-col h-full'>
+                        {sidebarContent}
+                    </div>
                 </motion.div>
             </motion.div>,
+            // تم تغيير createPortal من react-dom بدلاً من react
             document.getElementById("sidebar-root")
         )
         : null;

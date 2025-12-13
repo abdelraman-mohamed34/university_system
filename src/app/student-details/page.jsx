@@ -6,6 +6,7 @@ import { fetchColleges } from '../features/AsyncSlices/CollegeSlice'
 import Header from '../components/home-page/Header'
 import { motion, AnimatePresence } from 'framer-motion'
 import { globals } from '../../../data/global'
+import { BiBookOpen, BiIdCard, BiMap, BiPhone, BiUser, BiChevronDown, BiChevronUp, BiFile } from "react-icons/bi";
 
 function Page() {
     const dispatch = useDispatch()
@@ -17,14 +18,12 @@ function Page() {
     const [currYear, setCurrYear] = useState(null)
     const [currentDepartment, setCurrentDepartment] = useState(null)
     const [subjects, setSubjects] = useState(null)
-    const [previewImage, setPreviewImage] = useState(null) // For modal preview
+    const [previewImage, setPreviewImage] = useState(null)
     const term = globals.term
 
-    // Fetch Data
     useEffect(() => {
         dispatch(fetchStudents())
         dispatch(fetchColleges())
-
         if (typeof window !== 'undefined') {
             const code = localStorage.getItem('selectedStudentCode')
             setSavedStudentCode(code)
@@ -33,7 +32,6 @@ function Page() {
 
     const student = students.find(s => s.code === savedStudentCode)
 
-    // College > Year
     useEffect(() => {
         if (student && colleges.length > 0) {
             const currentCollege = colleges.find(col => col.college === student.faculty)
@@ -44,7 +42,6 @@ function Page() {
         }
     }, [student, colleges])
 
-    // Department
     useEffect(() => {
         if (currYear) {
             const currDepartment = currYear.departments.find(d => d.name === student.department)
@@ -52,7 +49,6 @@ function Page() {
         }
     }, [currYear])
 
-    // Subjects
     useEffect(() => {
         if (currentDepartment) {
             const subjects = currentDepartment.terms.find(t => t.term === term)
@@ -65,149 +61,147 @@ function Page() {
     }
 
     return (
-        <div className='lg:px-10 sm:py-5 pb-5 sm:px-7 px-2'>
+        <div className='w-full rounded-xl sm:mb-5 mb-2 pb-3 overflow-hidden p-10 pt-0' dir="rtl">
             {!savedStudentCode ? (
-                <div>لا يوجد طالب محدد</div>
+                <div className='flex justify-center items-center h-64 text-gray-500 font-bold'> لا يوجد طالب محدد</div>
             ) : !student ? (
-                <div>لا توجد بيانات للطالب</div>
+                <div className='flex justify-center items-center h-64 text-gray-500 font-bold'> جاري تحميل بيانات الطالب...</div>
             ) : (
                 <>
                     <Header prop='بيانات الطالب' />
+                    <div className='w-full mx-auto'>
+                        <div className='bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8'>
+                            <div className='relative h-48 bg-gradient-to-r from-[#4D44B5] to-[#827AF3]'>
 
-                    <div className='w-full rounded-xl pb-10 overflow-hidden'>
-                        {/* HEADER CARD */}
-                        <div className='bg-white w-full rounded-xl sm:mb-5 mb-2 pb-3 overflow-hidden'>
-                            <div className='relative w-full h-50 bg-[#4D44B5] mb-10'>
-                                <div className="absolute top-0 right-0 w-full h-full overflow-hidden">
-                                    <span className="absolute top-15 lg:right-20 right-2 lg:bg-transparent bg-[#FCC43E] rounded aspect-square lg:w-70 w-40 lg:border-35 lg:border-[#FCC43E] lg:rounded-full z-10" />
-                                    <span className="absolute top-25 lg:right-70 right-30  lg:bg-transparent bg-[#FB7D5B] rounded aspect-square lg:w-48 w-35 lg:border-35 lg:border-[#FB7D5B] lg:rounded-full" />
+                                <div className="absolute top-0 left-0 w-full h-full opacity-10 overflow-hidden">
+                                    <div className="absolute -top-10 -right-10 w-64 h-64 rounded-full bg-white" />
+                                    <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-white" />
                                 </div>
-                                <span className='aspect-square rounded-full w-40 overflow-hidden border-4 border-white absolute top-32 sm:left-10 sm:right-auto right-2 shadow z-20'>
-                                    <img
-                                        className='w-full h-full object-cover'
-                                        src={student?.photo?.trim() !== "" ? student?.photo : globals?.avatarUserLink}
-                                        alt={student.fullName}
-                                    />
-                                </span>
+
+                                <div className='absolute -bottom-16 right-10'>
+                                    <div className='p-1 bg-white rounded-full shadow-lg'>
+                                        <img
+                                            className='w-32 h-32 rounded-full object-cover'
+                                            src={student?.photo?.trim() !== "" ? student?.photo : globals?.avatarUserLink}
+                                            alt={student.fullName}
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className='px-10 mb-6 sm:pt-0 pt-15'>
-                                <h2 className='text-2xl font-bold'>{student.fullName}</h2>
-                                <p>{student.email}</p>
-                                <p>الكلية: {student.faculty}</p>
-                                <p>الفرقة: {student.currentYear}</p>
-                                <p>الحالة: {student.status}</p>
-                                <p>المدينة: {student.city} - العنوان: {student.address}</p>
-                                <p>رقم تلفون الطالب: {student.phone}</p>
-                                <p>رقم تلفون ولي الأمر: {student.fatherPhone}</p>
+                            <div className='pt-20 sm:px-10 px-5 pb-10 flex flex-col md:flex-row justify-between items-start gap-6'>
+                                <div className='flex-1'>
+                                    <h2 className='text-3xl font-black text-[#303972] mb-2'>{student.fullName}</h2>
+                                    <div className='flex flex-wrap gap-4 text-[#A098AE] font-medium'>
+                                        <span className='flex items-center gap-1'><BiBookOpen /> {student.faculty} - {student.department}</span>
+                                        <span className='flex items-center gap-1 text-[#4D44B5] bg-[#F4F2FF] px-3 py-0.5 rounded-full text-sm'>{student.status}</span>
+                                    </div>
+                                </div>
+
+                                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 w-full md:w-auto'>
+                                    <div className='flex items-center gap-3 bg-gray-50 p-3 rounded-2xl'>
+                                        <div className='bg-white p-2 rounded-xl text-[#FCC43E] shadow-sm'><BiPhone className='text-xl' /></div>
+                                        <div>
+                                            <p className='text-[10px] text-[#A098AE]'>رقم الطالب</p>
+                                            <p className='text-sm font-bold text-[#303972]'>{student.phone}</p>
+                                        </div>
+                                    </div>
+                                    <div className='flex items-center gap-3 bg-gray-50 p-3 rounded-2xl'>
+                                        <div className='bg-white p-2 rounded-xl text-[#FB7D5B] shadow-sm'><BiMap className='text-xl' /></div>
+                                        <div>
+                                            <p className='text-[10px] text-[#A098AE]'>السكن</p>
+                                            <p className='text-sm font-bold text-[#303972]'>{student.city}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* SUBJECTS + ASSIGNMENTS */}
-                        <ul className='space-y-4'>
-                            <h1 className='mb-3 text-xl font-bold text-[#363B64]'>المواد :</h1>
-                            {subjects?.courses.length > 0 ? subjects.courses.map((course, idx) => (
-                                <motion.li
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.3, delay: idx * 0.1 }}
-                                    className='relative p-4 rounded-md bg-white overflow-hidden pr-6 shadow-md'
-                                >
-                                    <span className='absolute h-full w-2 right-0 top-0 bg-[#4D44B5]' />
+                        <div className='mb-6'>
+                            <h3 className='text-xl font-black text-[#303972] mb-6 flex items-center gap-2'>
+                                <span className='w-2 h-8 bg-[#4D44B5] rounded-full' />
+                                المقررات الدراسية
+                            </h3>
 
-                                    {/* Course Header */}
-                                    <div
-                                        className='flex justify-between items-center cursor-pointer'
-                                        onClick={() => toggleCourse(idx)}
+                            <div className='space-y-4'>
+                                {subjects?.courses.length > 0 ? subjects.courses.map((course, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: idx * 0.1 }}
+                                        className='bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden'
                                     >
-                                        <h6 className='font-semibold text-lg'>{course.subject}</h6>
-                                        <span className='text-[#4D44B5] font-bold text-xl'>
-                                            {openCourses[idx] ? '-' : '+'}
-                                        </span>
-                                    </div>
-
-                                    <AnimatePresence>
-                                        {openCourses[idx] && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: 'auto', opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.3 }}
-                                                className='mt-4 space-y-4'
-                                            >
-                                                {/* Assignments */}
+                                        <div
+                                            className={`p-5 flex justify-between items-center cursor-pointer transition-colors ${openCourses[idx] ? 'bg-[#F4F2FF]/50' : 'hover:bg-gray-50'}`}
+                                            onClick={() => toggleCourse(idx)}
+                                        >
+                                            <div className='flex items-center gap-4'>
+                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-sm ${openCourses[idx] ? 'bg-[#4D44B5] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                                    <BiBookOpen />
+                                                </div>
                                                 <div>
-                                                    <h4 className='font-semibold text-[#4D44B5] mb-2'>الواجبات:</h4>
+                                                    <h6 className='font-bold text-[#303972] text-lg'>{course.subject}</h6>
+                                                    <p className='text-xs text-[#A098AE]'>{course.assignments.length} واجبات | {course.tests.length} اختبارات</p>
+                                                </div>
+                                            </div>
+                                            <div className='text-2xl text-[#4D44B5]'>
+                                                {openCourses[idx] ? <BiChevronUp /> : <BiChevronDown />}
+                                            </div>
+                                        </div>
 
-                                                    <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 p-5 bg-[#F3F4FF] gap-3'>
-                                                        {course.assignments.length > 0 ? (
-                                                            course.assignments.map((a, i) => (
-                                                                <div key={i}>
-                                                                    <div className="relative p-3 pb-2 pr-9 rounded-lg bg-white shadow-md overflow-hidden max-h-[150px]">
-                                                                        <span className="absolute w-4 h-full right-0 top-0 bg-[#4D44B5]" />
-                                                                        <p className="text-lg font-semibold truncate">{a.title}</p>
+                                        <AnimatePresence>
+                                            {openCourses[idx] && (
+                                                <motion.div
+                                                    initial={{ height: 0 }}
+                                                    animate={{ height: 'auto' }}
+                                                    exit={{ height: 0 }}
+                                                    className='overflow-hidden border-t border-gray-50'
+                                                >
+                                                    <div className='p-6 bg-white space-y-6'>
+                                                        <div>
+                                                            <h5 className='text-[#4D44B5] font-bold text-sm mb-4 flex items-center gap-2'>
+                                                                <BiFile /> الواجبات
+                                                            </h5>
+                                                            <div className='grid lg:grid-cols-3 md:grid-cols-2 gap-4 font-bold'>
+                                                                {course.assignments.map((a, i) => (
+                                                                    <div key={i} className='group bg-gray-50 p-4 rounded-2xl border border-transparent hover:border-[#4D44B5] hover:bg-white transition-all shadow-sm'>
+                                                                        <h6 className='text-[#303972] mb-1 truncate'>{a.title}</h6>
+                                                                        <p className='text-xs text-[#A098AE] font-normal mb-3 line-clamp-2'>{a.description || 'لا يوجد وصف متاح'}</p>
+                                                                        {a.file && (
+                                                                            <button
+                                                                                onClick={(e) => { e.stopPropagation(); a.file.endsWith('.pdf') ? window.open(a.file) : setPreviewImage(a.file) }}
+                                                                                className='w-full py-2 bg-white rounded-xl text-[#4D44B5] text-xs border border-gray-100 group-hover:bg-[#4D44B5] group-hover:text-white transition-colors'
+                                                                            >
+                                                                                عرض المرفق
+                                                                            </button>
+                                                                        )}
                                                                     </div>
-                                                                    {a.description && <p className='text-sm text-gray-600'>{a.description}</p>}
-
-                                                                    {a.file && (
-                                                                        <>
-                                                                            {a.file.endsWith('.pdf') ? (
-                                                                                <a href={a.file} target='_blank' className='text-blue-600 underline text-sm'>
-                                                                                    تحميل PDF
-                                                                                </a>
-                                                                            ) : (
-                                                                                <img
-                                                                                    src={a.file}
-                                                                                    className='w-40 h-40 object-cover cursor-pointer mt-2 rounded-md shadow'
-                                                                                    alt={a.title}
-                                                                                    onClick={() => setPreviewImage(a.file)}
-                                                                                />
-                                                                            )}
-                                                                        </>
-                                                                    )}
-                                                                </div>
-                                                            ))
-                                                        ) : (
-                                                            <p className='text-gray-400'>لا توجد واجبات</p>
-                                                        )}
-                                                    </div>
-
-                                                </div>
-
-                                                {/* Tests */}
-                                                <div>
-                                                    <h4 className='font-semibold text-[#4D44B5] mb-2'>الاختبارات:</h4>
-                                                    {course.tests.length > 0 ? (
-                                                        course.tests.map((t, i) => (
-                                                            <div key={i} className='p-3 bg-gray-100 rounded-lg my-1'>
-                                                                <p className='font-semibold'>{t.title || `اختبار ${i + 1}`}</p>
-                                                                {t.description && <p className='text-sm text-gray-600'>{t.description}</p>}
+                                                                ))}
                                                             </div>
-                                                        ))
-                                                    ) : (
-                                                        <p className='text-gray-400'>لا توجد اختبارات</p>
-                                                    )}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </motion.li>
-                            )) : (
-                                <li className='p-4 bg-white rounded-xl shadow-md'>لا توجد مواد</li>
-                            )}
-                        </ul>
-
-                        {/* IMAGE MODAL */}
-                        {previewImage && (
-                            <div
-                                className='fixed inset-0 bg-black backdrop-blur bg-opacity-70 flex justify-center items-center z-50'
-                                onClick={() => setPreviewImage(null)}
-                            >
-                                <img src={previewImage} className='max-h-[80%] max-w-[80%] rounded shadow-lg' alt='Preview' />
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                )) : (
+                                    <div className='p-10 bg-white rounded-3xl text-center text-gray-400 font-bold'> لا توجد مواد دراسية مسجلة حالياً</div>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </div>
+                    {previewImage && (
+                        <div className='fixed inset-0 bg-[#303972]/80 backdrop-blur-sm flex justify-center items-center z-[100] p-4' onClick={() => setPreviewImage(null)}>
+                            <motion.img
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                src={previewImage}
+                                className='max-h-[90vh] max-w-full rounded-3xl shadow-2xl border-4 border-white'
+                                alt='Preview'
+                            />
+                        </div>
+                    )}
                 </>
             )}
         </div>

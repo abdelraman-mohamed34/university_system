@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Wrapper from "./Wrapper.js";
+import OneSignalInitializer from "./components/OneSignalInitializer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "جامعتي",
-  description: "مطور من قبل عبدالرحمن طالب في كلية اهندسة الزراعيه القاهرة - +201021079171",
+  description: "مطور من قبل عبدالرحمن طالب في كلية الهندسة الزراعيه بالقاهرة - +201021079171",
 };
 
 export default function RootLayout({ children }) {
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <OneSignalInitializer />
         <Wrapper>{children}</Wrapper>
       </body>
     </html >

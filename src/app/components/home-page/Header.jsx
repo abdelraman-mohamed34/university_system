@@ -7,19 +7,19 @@ import { useDispatch } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import { setShowDrawer } from '@/app/features/NormalSlices/drawerSlice';
 
-function Header({ prop, showSearch }) {
+function Header({ prop, showSearch, showAddTeacher }) {
 
     // auth
     const { data: session } = useSession();
-    const route = session?.user ? '/myAccount' : '/login' || '/login';
+    const route = '/myAccount';
     const dispatch = useDispatch()
 
     return (
         <div className="relative w-full flex justify-between items-center sm:py-5 pt-5 pb-3 lg:pl-0 pl-8 pr-3">
-            <span className='flex items-center gap-3'>
+            <div className='flex items-center gap-3'>
                 <Link href={route}>
                     {session?.user ? (
-                        session?.user?.photo?.trim() === '' ? (
+                        session?.user?.photo?.trim() === '' || !session?.user?.photo ? (
                             <Avatar
                                 sx={{ bgcolor: '#C1BBEB' }}
                                 alt={session?.user?.fullName}
@@ -27,7 +27,7 @@ function Header({ prop, showSearch }) {
                             >
                             </Avatar>
                         ) : (
-                            <span className='w-10 h-10 rounded-full flex bg-white overflow-hidden'>
+                            <span className='w-10 h-10 rounded-full flex bg-white overflow-hidden shadow-xl'>
                                 <img src={session?.user?.photo} alt="profile image" className='object-cover' />
                             </span>
                         )
@@ -40,10 +40,10 @@ function Header({ prop, showSearch }) {
                     )}
                 </Link>
                 <h1 className="font-bold lg:text-3xl sm:text-2xl text-lg text-[#303972]">{prop}</h1>
-            </span>
+            </div>
 
             {showSearch === true && (
-                <div className="flex items-center gap-2 rounded-3xl px-4 py-2 border border-gray-300 bg-white ">
+                <div className="flex items-center gap-2 rounded-3xl px-4 py-1 border border-gray-300 bg-white ml-3">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -67,11 +67,25 @@ function Header({ prop, showSearch }) {
                     />
                 </div>
             )}
+
             <button className='absolute left-3 lg:hidden flex' onClick={() => dispatch(setShowDrawer(true))}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
+
+            {showAddTeacher && (
+                <Link href={'/addNewTeacher'}
+                    className="flex justify-center items-center gap-2 bg-white text-[#4D44B5] p-3 px-5 rounded-2xl 
+                            hover:bg-[#4D44B5] hover:text-white hover:scale-105 transition-all duration-200 lg:ml-0 ml-3"
+                >
+                    <p>إضافة</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        strokeWidth={1.5} stroke="currentColor" className="size-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </Link>
+            )}
         </div>
     )
 }

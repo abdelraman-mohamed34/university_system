@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles'
 import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi"
 import { motion } from "framer-motion"
 import { globals } from '../../../data/global'
+import { useSession } from 'next-auth/react'
 
 const AntTabs = styled(Tabs)({
     '& .MuiTabs-indicator': { backgroundColor: 'transparent', height: 0 },
@@ -37,6 +38,8 @@ export default function Page() {
     const dispatch = useDispatch()
     const router = useRouter()
     const professors = useSelector((prof) => prof.professors.professors) || []
+
+    const { data: session } = useSession()
 
     const [value, setValue] = useState(0)
     const itemsPerPage = 10
@@ -77,11 +80,11 @@ export default function Page() {
         </div>
     )
 
-    if (!professors.length) return <SkeletonLoader />
+    if (!professors) return <SkeletonLoader />
 
     return (
-        <div className='lg:px-10 sm:py-5 pb-5 sm:px-7 px-2'>
-            <Header prop='المعلمون' />
+        <div className='lg:px-10 sm:py-5 pb-5 sm:px-7 px-2 pt-0 sm:pt-0'>
+            <Header showAddTeacher={session?.user?.role === 'admin' ? true : false} prop='المعلمون' />
 
             <div className='grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
                 {professors
@@ -109,22 +112,24 @@ export default function Page() {
                     ))}
             </div>
 
-            {/* Pagination */}
-            <div className='w-full mt-5 flex justify-center items-center'>
-                <BiSolidRightArrow onClick={() => handleChangeValue(-1)} style={{ cursor: 'pointer', color: '#A098AE' }} />
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginX: '10px' }}>
-                    <AntTabs
-                        value={value - start}
-                        onChange={(_, newValue) => setValue(newValue + start)}
-                        aria-label="pagination tabs"
-                    >
-                        {Array.from({ length: totalPages }).slice(start, end).map((_, index) => (
-                            <AntTab key={start + index} label={start + index + 1} />
-                        ))}
-                    </AntTabs>
-                </Box>
-                <BiSolidLeftArrow onClick={() => handleChangeValue(+1)} style={{ cursor: 'pointer', color: '#A098AE' }} />
-            </div>
+            {professors?.length !== 0 && (
+                <div className='w-full mt-5 flex justify-center items-center'>
+                    <BiSolidRightArrow onClick={() => handleChangeValue(-1)} style={{ cursor: 'pointer', color: '#A098AE' }} />
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginX: '10px' }}>
+                        <AntTabs
+                            value={value - start}
+                            onChange={(_, newValue) => setValue(newValue + start)}
+                            aria-label="pagination tabs"
+                        >
+                            {Array.from({ length: totalPages }).slice(start, end).map((_, index) => (
+                                <AntTab key={start + index} label={start + index + 1} />
+                            ))}
+                        </AntTabs>
+                    </Box>
+                    <BiSolidLeftArrow onClick={() => handleChangeValue(+1)} style={{ cursor: 'pointer', color: '#A098AE' }} />
+                </div>
+            )}
+
         </div>
     )
 }

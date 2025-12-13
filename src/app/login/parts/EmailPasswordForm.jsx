@@ -56,7 +56,6 @@ export default function EmailPasswordForm({
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className={`p-3 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none ${fieldErrors.email ? 'border-red-500' : 'border-gray-300'}`}
-                    required
                 />
                 <AnimatePresence>
                     {fieldErrors.email && (
@@ -82,7 +81,6 @@ export default function EmailPasswordForm({
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     className={`p-3 border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none ${fieldErrors.password ? 'border-red-500' : 'border-gray-300'}`}
-                    required
                 />
                 <AnimatePresence>
                     {fieldErrors.password && (

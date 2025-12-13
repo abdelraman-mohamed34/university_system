@@ -1,15 +1,17 @@
 import connectDB from "../../../lib/mongodb.js";
 import Student from "../../../../models/Student.js";
 import Professor from "../../../../models/Professor.js";
+import Admin from "../../../../models/Admin.js";
+import { getToken } from "next-auth/jwt";
 
 // fetch
 export async function GET() {
     try {
         await connectDB();
-
         const students = await Student.find();
         const professors = await Professor.find();
-        const users = [...students, ...professors];
+        const admins = await Admin.find();
+        const users = [...students, ...professors, ...admins];
 
         return new Response(JSON.stringify(users), {
             status: 200,
@@ -33,18 +35,22 @@ export async function GET() {
 export async function POST(req) {
     try {
         await connectDB();
-        const { id, img } = await req.json();
-
-        if (!id || !img) {
+        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        const { img } = await req.json();
+        if (!token) return Response.json(
+            { success: false, message: "you need ti signIn" },
+            { status: 404 }
+        );
+        if (!img) {
             return Response.json(
                 { success: false, message: "not found" },
                 { status: 401 }
             );
         }
 
-        let currentUser = await Student.findOne({ code: id });
+        let currentUser = await Student.findOne({ code: token?.code });
         if (!currentUser) {
-            currentUser = await Professor.findOne({ code: id });
+            currentUser = await Professor.findOne({ code: token?.code });
         }
         if (!currentUser) {
             return Response.json(
@@ -52,10 +58,8 @@ export async function POST(req) {
                 { status: 404 }
             );
         }
-
         currentUser.photo = img;
         await currentUser.save();
-
         return Response.json(
             { success: true, message: "fetched" },
             { status: 200 }
@@ -72,18 +76,17 @@ export async function POST(req) {
 // delete image
 export async function DELETE(req) {
     try {
-        const { id } = await req.json();
-
-        if (!id) {
+        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+        if (!token) {
             return Response.json(
                 { success: false, message: "لم يتم إرسال id" },
                 { status: 400 }
             );
         }
 
-        let currentUser = await Student.findOne({ code: id });
+        let currentUser = await Student.findOne({ code: token?.code });
         if (!currentUser) {
-            currentUser = await Professor.findOne({ code: id });
+            currentUser = await Professor.findOne({ code: token?.code });
         }
 
         if (!currentUser) {
@@ -95,8 +98,6 @@ export async function DELETE(req) {
 
         currentUser.photo = "";
         await currentUser.save();
-
-
         return Response.json(
             { success: true, message: "تم حذف الصورة" },
             { status: 200 }

@@ -25,7 +25,8 @@ body {
   font-family: 'Tajawal', Arial, Helvetica, sans-serif;
 }
 
-button {
+button,
+a {
   cursor: pointer;
 }
 
@@ -78,4 +79,9 @@ li {
   font-family: "Tajawal", sans-serif;
   font-weight: 900;
   font-style: normal;
+}
+
+select {
+  color: #000;
+  background-color: #fff;
 }

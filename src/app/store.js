@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import studentsReducer from './features/AsyncSlices/StudentSlice.js';
 import professorsReducer from './features/AsyncSlices/ProfSlice.js';
+import adminsReducer from './features/AsyncSlices/AdminsSlice.js';
 import usersReducer from './features/AsyncSlices/UsersSlice.js'
 import foodsReducer from './features/AsyncSlices/FoodSlice.js';
 import booksReducer from './features/AsyncSlices/LibrarySlice.js';
@@ -16,6 +17,7 @@ export const store = configureStore({
         users: usersReducer,
         students: studentsReducer,
         professors: professorsReducer,
+        admins: adminsReducer,
         food: foodsReducer,
         library: booksReducer,
         events: eventsReducer,

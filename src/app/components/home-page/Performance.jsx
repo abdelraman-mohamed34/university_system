@@ -30,81 +30,30 @@ export default function Performance() {
     const [isSmallScreen] = useMediaQuery("(max-width: 450px)");
 
     return (
-        <div className="rounded-xl bg-white sm:p-6 pb-8 w-full lg:h-100 sm:h-70 h-50 sm:mt-5 mt-2">
-            {/* ====== TITLE ====== */}
+        <div className="rounded-xl bg-white sm:p-6 pb-8 w-full lg:h-100 sm:h-70 h-50 sm:mt-5 mt-2 shadow-lg">
+
             <div className="sm:p-0 pt-2 pr-3">
-                <h2 className="lg:text-2xl sm:text-xl text-lg font-semibold mb-4 text-[#303972]">مستوي النجاح اخر 10 سنين</h2>
+                <h2 className="lg:text-2xl sm:text-xl text-lg font-bold mb-4 text-[#303972]">
+                    مستوي النجاح اخر 10 سنين
+                </h2>
             </div>
 
-            <ResponsiveContainer width="100%" height="85%">
+            <ResponsiveContainer width="100%" height="85%" style={{ pointerEvents: 'none' }}>
                 <LineChart
                     data={data}
                     margin={{ top: 20, right: 30, left: -30, bottom: 0 }}
+                    cursor={undefined} // لا cursor
                 >
-                    {/* ====== GRADIENTS ====== */}
-                    <defs>
-                        <linearGradient id="thisWeek" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#FCC43E" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="#FCC43E" stopOpacity={0.05} />
-                        </linearGradient>
-
-                        <linearGradient id="lastWeek" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#FF6A59" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="#FF6A59" stopOpacity={0.05} />
-                        </linearGradient>
-                    </defs>
-
-                    {/* ===== GRID ===== */}
                     <CartesianGrid vertical stroke="#E3E0F8" strokeDasharray="3 3" />
-
-                    {/* ===== X Axis ===== */}
-                    <XAxis
-                        dataKey="name"
-                        tick={{ fill: "#A7A3B5", fontSize: 14 }}
-                        axisLine={false}
-                        tickLine={false}
-                    />
-
-                    {/* ===== Y Axis ===== */}
-                    <YAxis
-                        tick={{ fill: "#A7A3B5", fontSize: 14 }}
-                        axisLine={false}
-                        tickLine={false}
-                        domain={[0, 120]}
-                    />
-
-                    {/* ===== TOOLTIP ===== */}
-                    <Tooltip
-                        contentStyle={{
-                            background: "#fff",
-                            borderRadius: "10px",
-                            border: "none",
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                        }}
-                        cursor={null}
-                    />
-
-                    {/* ===== LINES ===== */}
-                    <Line
-                        type="monotone"
-                        dataKey="this"
-                        stroke="#FCC43E"
-                        strokeWidth={!isSmallScreen ? 6 : 4}
-                        dot={{ r: 0, fill: "#fff", strokeWidth: 1, stroke: "#FCC43E" }}
-                        activeDot={{ r: 0 }}
-                        fill="url(#thisWeek)"
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="last"
-                        stroke="#FF6A59"
-                        strokeWidth={!isSmallScreen ? 6 : 4}
-                        activeDot={{ r: 5 }}
-                        dot={{ r: 0, fill: "#fff", strokeWidth: 1, stroke: "#FCC43E" }}
-                        fill="url(#lastWeek)"
-                    />
+                    <XAxis dataKey="name" tick={{ fill: "#A7A3B5", fontSize: 14 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fill: "#A7A3B5", fontSize: 14 }} axisLine={false} tickLine={false} domain={[0, 120]} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="this" stroke="#FCC43E" strokeWidth={!isSmallScreen ? 6 : 4} dot={false} />
+                    <Line type="monotone" dataKey="last" stroke="#FF6A59" strokeWidth={!isSmallScreen ? 6 : 4} dot={false} />
                 </LineChart>
             </ResponsiveContainer>
+
+
         </div >
     );
 }

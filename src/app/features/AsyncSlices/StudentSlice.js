@@ -33,6 +33,23 @@ export const postAssignmentSolution = createAsyncThunk(
     }
 );
 
+export const solveTheExam = createAsyncThunk(
+    'exams/solveTheExamStatus',
+    async ({ data, examId }, thunkAPI) => {
+        try {
+            const response = await axios.post(
+                `/api/solveExam?q=${examId}`,
+                data,
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response?.data || err.message);
+        }
+    }
+);
+
+
 const studentsSlice = createSlice({
     name: 'students',
     initialState,
@@ -44,22 +61,22 @@ const studentsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchStudents.pending, (state) => {
             state.loading = true;
-            console.log('pending');
         });
         builder.addCase(fetchStudents.fulfilled, (state, action) => {
             state.students = action.payload;
             state.loading = false;
-            console.log('fulfilled');
         });
         builder.addCase(fetchStudents.rejected, (state) => {
             state.loading = false;
-            console.log('rejected');
         });
-        builder.addCase(postAssignmentSolution.fulfilled, (state, action) => {
-            console.log('submitted')
+        builder.addCase(solveTheExam.pending, (state) => {
+            state.loading = true;
         });
-        builder.addCase(postAssignmentSolution.rejected, (state, action) => {
-            console.log('failed to upload the solution of assignment')
+        builder.addCase(solveTheExam.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(solveTheExam.rejected, (state) => {
+            state.loading = false;
         });
     },
 });

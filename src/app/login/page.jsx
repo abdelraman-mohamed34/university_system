@@ -17,7 +17,7 @@ export default function LoginPage() {
     const dispatch = useDispatch()
 
     return (
-        <div className="grid grid-cols-2 h-screen w-full">
+        <div className="grid lg:grid-cols-[40rem_1fr] h-screen w-full ">
             <button className="absolute top-3 right-3" onClick={
                 () => router.back()
             }>

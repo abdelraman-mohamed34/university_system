@@ -1,41 +1,61 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Header from '../components/home-page/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchColleges } from '../features/AsyncSlices/CollegeSlice';
 import Filters from './Filters';
 import { motion } from 'framer-motion';
-import { Skeleton, SkeletonText, Box } from '@mui/material';
+import { Skeleton, Box } from '@mui/material'; // تم حذف SkeletonText لأنه غير مستخدم
 import { fetchProfessors } from '../features/AsyncSlices/ProfSlice';
 
 function Page() {
     const dispatch = useDispatch();
     const colleges = useSelector(c => c.colleges.colleges || []);
     const professors = useSelector(p => p.professors.professors || []);
+
+    // حالة تحميل واحدة لكلا عمليتي الجلب
     const [loading, setLoading] = useState(true);
 
     const [filterCollege, setFilterCollege] = useState('');
     const [filterDept, setFilterDept] = useState('');
     const [filterTerm, setFilterTerm] = useState('');
 
+    // **✅ تعديل إدارة حالة التحميل**
     useEffect(() => {
-        dispatch(fetchColleges()).finally(() => setLoading(false));
-    }, [dispatch]);
-    useEffect(() => {
-        dispatch(fetchProfessors()).finally(() => setLoading(false));
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                // انتظار انتهاء جلب كلا المصدرين قبل تعيين loading=false
+                await Promise.all([
+                    dispatch(fetchColleges()).unwrap(), // استخدام unwrap للوصول إلى حالة الـ promise
+                    dispatch(fetchProfessors()).unwrap(),
+                ]);
+            } catch (error) {
+                console.error("Failed to fetch all data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [dispatch]);
 
+    // تصفية الكليات بناءً على فلتر الكلية
     const filteredColleges = colleges.filter(col =>
         filterCollege ? col.college === filterCollege : true
     );
 
-    const filteredDepartments = filterCollege
-        ? colleges
-            .find(col => col.college === filterCollege)?.years
-            .flatMap(year => year.departments.map(dept => dept.name)) || []
-        : [];
+    // **✅ استخدام useMemo لتحسين أداء حساب الأقسام المفلترة الفريدة**
+    const uniqueFilteredDepartments = useMemo(() => {
+        const departmentsList = filterCollege
+            ? colleges
+                .find(col => col.college === filterCollege)?.years
+                .flatMap(year => year.departments.map(dept => dept.name)) || []
+            : [];
 
-    const uniqueFilteredDepartments = [...new Set(filteredDepartments)];
+        return [...new Set(departmentsList)];
+    }, [filterCollege, colleges]); // يتم إعادة الحساب فقط عند تغير الفلتر أو قائمة الكليات
+
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -47,35 +67,26 @@ function Page() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
     };
 
-    // for (const pro of professors) {
-    //     console.log(pro)
-
-    // }
+    // متغير لتبسيط كود الـ Skeleton
+    const skeletonShineStyle = {
+        backgroundColor: '#F5F5F5',
+        '&::after': {
+            background: 'linear-gradient(90deg, #E5E7EB, #F3F4F6, #E5E7EB)',
+        }
+    };
 
     // Skeleton component
     const renderSkeleton = () => (
-        <div className="w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow my-5">
+        <div className="w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow mb-5">
             <Skeleton
                 variant="text"
                 width="30%"
                 height={40}
-                sx={{
-                    mb: 2,
-                    backgroundColor: '#F5F5F5',
-                    '&::after': {
-                        background: 'linear-gradient(90deg, #E5E7EB, #F3F4F6, #E5E7EB)',
-                    }
-                }} />
+                sx={{ mb: 2, ...skeletonShineStyle }} />
             {[1, 2].map((_, i) => (
                 <div key={i} className="mb-4">
                     <Skeleton variant="text" width="20%" height={30}
-                        sx={{
-                            mb: 1,
-                            backgroundColor: '#F5F5F5',
-                            '&::after': {
-                                background: 'linear-gradient(90deg, #E5E7EB, #F3F4F6, #E5E7EB)',
-                            }
-                        }}
+                        sx={{ mb: 1, ...skeletonShineStyle }}
                     />
 
                     {[1, 2].map((_, j) => (
@@ -86,12 +97,7 @@ function Page() {
                                     variant="rectangular"
                                     height={100}
                                     className="rounded-lg"
-                                    sx={{
-                                        backgroundColor: '#F5F5F5',
-                                        '&::after': {
-                                            background: 'linear-gradient(90deg, #E5E7EB, #F3F4F6, #E5E7EB)',
-                                        }
-                                    }}
+                                    sx={skeletonShineStyle}
                                 />
                             ))}
                         </Box>
@@ -102,7 +108,7 @@ function Page() {
     );
 
     return (
-        <div className="min-h-screen lg:px-10 sm:py-5 pb-5 sm:px-7 px-2">
+        <div className="min-h-screen lg:px-10 sm:py-5 pb-5 sm:px-7 px-2 pt-0 sm:pt-0">
             <Header prop="المواد" />
 
             {/* filter */}
@@ -130,7 +136,7 @@ function Page() {
                         <motion.div
                             key={college._id}
                             variants={itemVariants}
-                            className='w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow my-5'
+                            className='w-full rounded-xl bg-white md:p-10 sm:p-5 p-3 shadow mb-5'
                         >
                             <h2 className="text-2xl font-bold mb-4 text-[#4D44B5]">{college.college}</h2>
                             {college.years.map(year => (

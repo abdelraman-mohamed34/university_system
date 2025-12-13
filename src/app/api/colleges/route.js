@@ -1,5 +1,6 @@
 import connectDB from "@/lib/mongodb.js";
 import College from '../../../../models/Colleges.js';
+import { getToken } from "next-auth/jwt";
 
 export async function GET() {
     await connectDB();
