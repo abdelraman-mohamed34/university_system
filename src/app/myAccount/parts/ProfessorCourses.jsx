@@ -91,7 +91,7 @@ export default function ProfessorCourses() {
               </div>
 
               {Object.keys(grouped[collegeName]).map((yearName) => (
-                <div key={yearName} className='bg-white sm:rounded-3xl rounded-xl p-6 shadow-sm border border-gray-50'>
+                <div key={yearName} className='bg-white sm:rounded-3xl rounded-xl p-6 shadow-sm border border-gray-50 mt-2'>
                   <div className='flex items-center gap-3 mb-6 border-b border-gray-50 pb-4'>
                     <div className='w-2 h-6 bg-[#FB7D5B] rounded-full' />
                     <h3 className='text-lg font-bold text-[#303972]'>{yearName}</h3>

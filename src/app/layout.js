@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "جامعتي",
-  description: "مطور من قبل عبدالرحمن طالب في كلية الهندسة الزراعيه بالقاهرة - +201021079171",
+  description: "مطور من قبل عبدالرحمن طالب في كلية الهندسة الزراعية جامعة الأزهر بالقاهرة - +201021079171",
 };
 
 export default function RootLayout({ children }) {
