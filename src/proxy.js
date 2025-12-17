@@ -12,8 +12,8 @@ export default withAuth(
         if (!token) return NextResponse.redirect(`${BASE_URL}/login`);
 
         const isTeacherRoute =
-            path.startsWith('/subject-management') ||
-            path.startsWith('/assignment-details');
+            path.startsWith('/subject-management')
+        // path.startsWith('/assignment-details');
 
         const isAdminRoute = path.startsWith('/addNewTeacher');
 
@@ -30,7 +30,7 @@ export default withAuth(
 export const config = {
     matcher: [
         '/subject-management/:path*',
-        '/assignment-details/:path*',
+        // '/assignment-details/:path*',
         '/myAccount',
         '/addNewTeacher',
     ],

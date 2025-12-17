@@ -11,7 +11,6 @@ import { ImSpinner2 } from 'react-icons/im'
 import { MdOutlinePictureAsPdf } from 'react-icons/md'
 import { HiOutlinePhotograph } from 'react-icons/hi'
 
-// منطق استخراج بيانات المادة
 const getCourseByCode = (colleges, subCode) => {
     if (!colleges?.length || !subCode) return null
     for (const college of colleges) {
@@ -111,14 +110,11 @@ function CurrentSubjectData() {
 
         setIsSubmitting(true)
 
-        // محاكاة لعملية الإرسال
         try {
-            // ملاحظة: postSubjectData يجب أن يتم تصميمه ليتعامل مع الـ uploaded object
             dispatch(
                 postSubjectData({
                     subCode: saved,
                     uploaded,
-                    // إذا كان الخادم يتوقع الـ URL الخاص بالمستخدم
                     userUrl: session?.user?.image,
                     userName: session?.user?.name
                 })
@@ -146,7 +142,6 @@ function CurrentSubjectData() {
 
     return (
         <div className='mt-6 text-right' dir="rtl">
-            {/* العنوان وزر الإضافة */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className='sm:text-2xl font-extrabold text-[#303972]'>
                     محتوي المادة: {currentCourse.name}
@@ -167,7 +162,6 @@ function CurrentSubjectData() {
                 )}
             </div>
 
-            {/* عرض المحتوى الحالي */}
             {currentCourse.data.length > 0 ? (
                 <div className='grid lg:grid-cols-3 sm:grid-cols-2 gap-4 bg-[#F3F4FF] p-4 rounded-lg max-h-[400px] overflow-y-auto custom-scrollbar'>
                     {currentCourse.data.map((d, index) => (
