@@ -2,7 +2,10 @@
 
 **A full-featured University Management System** built with modern web technologies, designed to manage academic and administrative workflows efficiently.
 
-🔗 **Live Demo:** https://university-system-beta.vercel.app/ :contentReference[oaicite:1]{index=1}
+---
+
+## 🌐 Live Demo
+🔗 https://university-system-beta.vercel.app/
 
 ---
 
@@ -46,3 +49,34 @@ Each module includes dashboards, secure API routes, and role-based access contro
 ✅ **Realtime Data Visualization** – Recharts used for academic metrics and insights. :contentReference[oaicite:9]{index=9}  
 
 ---
+
+## 📁 Project Structure
+
+```
+university_system/
+├─ data/                        # (Possibly seed or mock data files)
+├─ models/                      # Database models (Mongoose schemas)
+├─ public/                      # Static assets (icons, images, etc.)
+├─ src/                         # Source code (frontend + backend)
+│  ├─ app/                      # Next.js App Router pages
+│  ├─ components/               # Reusable UI components
+│  ├─ features/                 # Feature modules (dashboards, etc.)
+│  ├─ hooks/                    # Custom React hooks
+│  ├─ pages/                    # (If any legacy pages directory)
+│  ├─ store/                    # Redux store setup
+│  ├─ styles/                   # Global & component styles
+│  └─ utils/                    # Utility helper functions
+├─ validation/                  # Validation schemas (e.g., Zod/Yup)
+├─ .gitignore                   # Git ignore rules
+├─ README.md                    # Project documentation
+├─ eslint.config.mjs            # ESlint config
+├─ jsconfig.json                # Path aliases & JS config
+├─ next.config.mjs              # Next.js configuration
+├─ package.json                 # Dependencies & scripts
+├─ postcss.config.mjs           # PostCSS config
+└─ tailwind.config.js           # Tailwind CSS config
+
+```
+---
+
+⭐ If you like this project, don’t forget to give it a star!
