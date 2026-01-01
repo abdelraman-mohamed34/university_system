@@ -60,7 +60,7 @@ university_system/
 ├─ src/                         # Source code (frontend + backend)
 │  ├─ app/                      # Next.js App Router pages
 │  ├─ components/               # Reusable UI components
-│  ├─ features/                 # Feature modules (dashboards, etc.)
+│  ├─ features/                 # Redux folder (slices , etc...)
 │  ├─ hooks/                    # Custom React hooks
 │  ├─ pages/                    # (If any legacy pages directory)
 │  ├─ store/                    # Redux store setup
