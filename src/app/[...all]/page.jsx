@@ -44,7 +44,6 @@ function Page() {
                 </Link>
             </motion.div>
 
-            {/* جزء الصورة (يظهر فقط على الشاشات المتوسطة والكبيرة) */}
             <div className='hidden md:flex md:w-1/2 bg-white'>
                 <img
                     className='h-full w-full object-cover'

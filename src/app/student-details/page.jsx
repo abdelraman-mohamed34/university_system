@@ -164,7 +164,7 @@ function Page() {
                                                                 <BiFile /> الواجبات
                                                             </h5>
                                                             <div className='grid lg:grid-cols-3 md:grid-cols-2 gap-4 font-bold'>
-                                                                {course.assignments.map((a, i) => (
+                                                                {course.assignments.length !== 0 ? course.assignments.map((a, i) => (
                                                                     <div key={i} className='group bg-gray-50 p-4 rounded-2xl border border-transparent hover:border-[#4D44B5] hover:bg-white transition-all shadow-sm'>
                                                                         <h6 className='text-[#303972] mb-1 truncate'>{a.title}</h6>
                                                                         <p className='text-xs text-[#A098AE] font-normal mb-3 line-clamp-2'>{a.description || 'لا يوجد وصف متاح'}</p>
@@ -177,7 +177,7 @@ function Page() {
                                                                             </button>
                                                                         )}
                                                                     </div>
-                                                                ))}
+                                                                )) : 'لا توجد واجبات لعرضها'}
                                                             </div>
                                                         </div>
                                                     </div>
